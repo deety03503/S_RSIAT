@@ -5,14 +5,20 @@
 import math
 import torch
 import torch.nn as nn
-from timm.models.layers import DropPath
+try:
+    from timm.layers import DropPath
+except ImportError:
+    from timm.models.layers import DropPath
 import timm
 from functools import partial
 from collections import OrderedDict
-import torch
-import torch.nn as nn
-from timm.models.vision_transformer import PatchEmbed
-from timm.models import register_model
+try:
+    from timm.layers import PatchEmbed
+except ImportError:
+    try:
+        from timm.models.vision_transformer import PatchEmbed
+    except ImportError:
+        from timm.models.layers import PatchEmbed
 
 
 from collections import OrderedDict
