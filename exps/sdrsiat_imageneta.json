@@ -8,9 +8,12 @@
     "increment": 20,
     "model_name": "adapter",
     "convnet_type": "pretrained_vit_b16_224_in21k_adapter",
-    "device": ["0"],
-    "seed": [1993],
-    
+    "device": [
+        "0"
+    ],
+    "seed": [
+        1993
+    ],
     "init_epochs": 20,
     "warmup_epoch": 3,
     "inc_epochs": 15,
@@ -21,7 +24,6 @@
     "min_lr": 0,
     "ffn_num": 64,
     "optimizer": "sgd",
-
     "scale": 30.0,
     "margin": 0.3,
     "alpha": 1.0,
@@ -32,7 +34,6 @@
     "ae_code_dims": 128,
     "ae_init_lr": 0.0003120779977680931,
     "ae_weight_decay": 2.424346330636298e-05,
-
     "sdrsiat": true,
     "alpha_in": 0.01,
     "alpha_hid": 0.01,
@@ -40,7 +41,7 @@
     "freeze_bias_incremental": false,
     "hard_projection": false,
     "stats_token_mode": "all",
-    "sdrsiat_project": "both",
+    "sdrsiat_project": "down",
     "sdrsiat_swap_roles": false,
     "sdrsiat_stats_max_batches": null,
     "sdrsiat_hard_alpha": 1e-8,
