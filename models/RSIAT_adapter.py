@@ -340,7 +340,8 @@ class Learner(BaseLearner):
                 route_gradients(loss_c, loss_align, loss_orth, beta, gamma,
                                 stable_params=roles["stable"], plastic_params=roles["plastic"],
                                 projector_params=proj_params, classifier_params=fc_params,
-                                other_params=other)
+                                other_params=other,
+                                route_align_to_plastic=self.sd.route_align_to_plastic)
                 snaps = self.sd.snapshot(adapters)
                 optimizer.step()
                 self.sd.project_updates(adapters, snaps)

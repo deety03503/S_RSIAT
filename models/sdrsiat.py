@@ -238,11 +238,12 @@ def _add(a, b):
 
 
 def route_gradients(loss_cos, loss_align, loss_orth, beta, gamma, stable_params, plastic_params,
-                    projector_params, classifier_params, other_params=()):
+                    projector_params, classifier_params, other_params=(),
+                    route_align_to_plastic=True):
     """Compute per-loss gradients with torch.autograd.grad and write ``.grad``.
 
         stable     <- grad(L_cos) + grad(beta * L_align)
-        plastic    <- grad(L_cos)                     (L_align is NEVER differentiated w.r.t. it)
+        plastic    <- grad(L_cos) + grad(beta * L_align) (when route_align_to_plastic=True; else grad(L_cos) only)
         classifier <- grad(L_cos)
         projector  <- grad(beta * L_align + gamma * L_orth)
         other      <- grad(L_cos) + grad(beta * L_align)   (original RSIAT behaviour; expected empty)
@@ -260,9 +261,8 @@ def route_gradients(loss_cos, loss_align, loss_orth, beta, gamma, stable_params,
     cos_targets = stable + plastic + cls + other
     g_cos = _safe_grad(loss_cos, cos_targets, retain_graph=True)
 
-    # (2) beta*L_align -> stable (+other) ONLY. Plastic params are not in the input list,
-    #     so no align gradient is ever computed for / applied to them.
-    align_targets = stable + other
+    # (2) beta*L_align -> stable (+ plastic if route_align_to_plastic) (+ other).
+    align_targets = stable + plastic + other if route_align_to_plastic else stable + other
     align_loss = None if loss_align is None else beta * loss_align
     g_align = _safe_grad(align_loss, align_targets, retain_graph=True)
 
@@ -316,6 +316,7 @@ class SDRSIATController(object):
         project = _cfg(args, "sdrsiat_project", "both", str)
         self.swap_roles = _cfg(args, "sdrsiat_swap_roles", False, bool)
         self.adapter_weight_decay = args.get("sdrsiat_adapter_weight_decay", None) if hasattr(args, "get") else None
+        self.route_align_to_plastic = _cfg(args, "sdrsiat_route_align_to_plastic", True, bool)
 
         if self.alpha_in <= 0 or self.alpha_hid <= 0 or self.hard_alpha <= 0:
             raise ValueError("alpha_in / alpha_hid / sdrsiat_hard_alpha must be > 0")
@@ -337,10 +338,11 @@ class SDRSIATController(object):
         self.history = []
         logging.info("{} config: alpha_in={} alpha_hid={} rho={} freeze_bias_incremental={} hard_projection={} "
                      "(hard_alpha={}) eig_floor={} stats_token_mode={} stats_max_batches={} project={} "
-                     "swap_roles={} adapter_weight_decay={}".format(
+                     "swap_roles={} route_align_to_plastic={} adapter_weight_decay={}".format(
                          _LOG, self.alpha_in, self.alpha_hid, self.rho, self.freeze_bias_incremental,
                          self.hard_projection, self.hard_alpha, self.eig_floor, self.stats_token_mode,
-                         self.stats_max_batches, project, self.swap_roles, self.adapter_weight_decay))
+                         self.stats_max_batches, project, self.swap_roles, self.route_align_to_plastic,
+                         self.adapter_weight_decay))
 
     # ------------------------------------------------------------------ roles
     def split_roles(self, adapters):

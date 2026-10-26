@@ -18,6 +18,7 @@ SDRSIAT_CLI_KEYS = (
     "sdrsiat_project",
     "sdrsiat_swap_roles",
     "sdrsiat_stats_max_batches",
+    "sdrsiat_route_align_to_plastic",
 )
 
 
@@ -37,6 +38,11 @@ def add_sdrsiat_cli_args(parser):
                    help="ablation: W_up stable (rho, L_align), W_down plastic")
     g.add_argument("--sdrsiat_stats_max_batches", type=int, default=None,
                    help="cap the number of batches used for statistics")
+    g.add_argument("--sdrsiat_route_align_to_plastic", action="store_true", default=None,
+                   help="route L_align to W_up (plastic) as well as W_down (stable)")
+    g.add_argument("--no_sdrsiat_route_align_to_plastic", dest="sdrsiat_route_align_to_plastic",
+                   action="store_false", default=None,
+                   help="do not route L_align to W_up (plastic)")
     return parser
 
 
