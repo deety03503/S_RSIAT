@@ -41,7 +41,7 @@
     "freeze_bias_incremental": false,
     "hard_projection": false,
     "stats_token_mode": "all",
-    "sdrsiat_project": "down",
+    "sdrsiat_project": "both",
     "sdrsiat_swap_roles": false,
     "sdrsiat_stats_max_batches": null,
     "sdrsiat_hard_alpha": 1e-8,
