@@ -38,7 +38,7 @@
     "alpha_in": 0.1,
     "alpha_hid": 0.01,
     "rho": 0.2,
-    "freeze_bias_incremental": false,
+    "freeze_bias_incremental": true,
     "hard_projection": false,
     "stats_token_mode": "all",
     "sdrsiat_project": "both",
