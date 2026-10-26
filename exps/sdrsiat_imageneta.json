@@ -35,7 +35,7 @@
     "ae_init_lr": 0.0003120779977680931,
     "ae_weight_decay": 2.424346330636298e-05,
     "sdrsiat": true,
-    "alpha_in": 0.01,
+    "alpha_in": 0.1,
     "alpha_hid": 0.01,
     "rho": 0.1,
     "freeze_bias_incremental": false,
