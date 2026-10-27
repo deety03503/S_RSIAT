@@ -3,20 +3,13 @@
 # https://github.com/jxhe/unify-parameter-efficient-tuning
 # --------------------------------------------------------
 import math
-import torch
-import torch.nn as nn
-from timm.models.layers import DropPath
-import timm
 from functools import partial
 from collections import OrderedDict
 import torch
 import torch.nn as nn
-from timm.models.vision_transformer import PatchEmbed
+import timm
+from timm.layers import DropPath, PatchEmbed
 from timm.models import register_model
-
-
-from collections import OrderedDict
-import torch
 
 
 
