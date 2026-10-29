@@ -14,8 +14,8 @@
     "seed": [
         1993
     ],
-    "init_epochs": 50,
-    "warmup_epoch": 3,
+    "init_epochs": 75,
+    "warmup_epoch": 10,
     "inc_epochs": 15,
     "ca_epochs": 10,
     "init_lr": 0.006688537652915857,
